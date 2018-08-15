@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('server-route-loader:server');
 var http = require('http');
+var io = require('socket.io')(http);
 
 /**
  * Get port from environment and store in Express.
@@ -14,6 +15,14 @@ var http = require('http');
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+
+io.on('connection', function(socket){
+  console.log('[USER CONNECTED TO SOCKETS]')
+  socket.on('chat message', function(msg){
+    console.log('message: ' + msg);
+  });
+});
+
 
 /**
  * Create HTTP server.
